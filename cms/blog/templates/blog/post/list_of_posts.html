@@ -1,10 +1,28 @@
 {% extends "blog/base.html" %}
+{% block description %}All blog posts{% endblock %}
 {% block title %}List of Posts{% endblock %}
 {% block content %}
-	{% for post in posts %}
-		<h2><a href="{{post.get_absolute_url}}">{{post.title}}</a></h2>
-		<p>Written by {{post.author}} on {{post.published}} in <a href="{{post.category.get_absolute_url}}">{{post.category}}</a></p>
-		<hr>
-		{{post.content|truncatewords:40|linebreaks}}
-	{% endfor %}
-{% endblock content %}
+<div class="row">
+	<div class="col-md-8">
+		<div class="page-header">
+			<h1>Our Latest Posts</h1>
+		</div>
+		<!-- /.page-header -->
+		{% for post in posts %}
+			<h3><a href="{{post.get_absolute_url}}">{{post.title}}</a></h3>
+			<small>Written by {{post.author}} on {{post.published}} in <a href="{{post.category.get_absolute_url}}">{{post.category}}</a></small>			
+			<br>
+			{{post.content|truncatewords:40|linebreaks}}
+			<hr>	
+		{% endfor %}	
+	</div>
+	<!-- /.col-md-8 -->
+	<div class="col-md-4">
+		<div class="page-header">
+			<h2>Sidebar</h2>
+		</div>
+	</div>
+	<!-- /.col-md-4 -->
+	{% endblock content %}
+</div>
+<!-- /.row -->
