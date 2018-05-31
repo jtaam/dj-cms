@@ -3,14 +3,30 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-# Create your models here.
+# category
+class Category(models.Model):
+	name = models.CharField(max_length=250)
+	slug = models.SlugField(max_length=250, unique=True)
+	class Meta:
+		ordering = ['name']
+		verbose_name = 'category'
+		verbose_name_plural = 'categories'
+
+	def get_absolute_url(self):
+		return reverse('blog:list_of_posts_by_category', args=[self.slug])
+
+	def __str__(self):
+		return self.name
+
+# post
 class Post(models.Model):
 	STATUS_CHOICES = (
 			('draft','Draft'),
 			('published','Published'),
 		)
 	title = models.CharField(max_length=250)
-	slug = models.SlugField(max_length=250)
+	category = models.ForeignKey(Category)
+	slug = models.SlugField(max_length=250, unique=True)
 	content = models.TextField()
 	seo_title = models.CharField(max_length=250)	
 	seo_descripttion = models.CharField(max_length=160)
