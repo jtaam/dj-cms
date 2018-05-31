@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Category
+from .forms import CommentForm
 
 
 def list_of_posts_by_category(request, category_slug):
@@ -23,6 +24,22 @@ def list_of_posts(request):
 
 def post_detail(request, slug):
 	post = get_object_or_404(Post, slug=slug)
-	template = 'blog/post/blog_post.html'
+	template = 'blog/post/post_detail.html'
 	context = {'post':post}
+	return render(request, template, context)
+
+
+def add_comment(request, slug):
+	post = get_object_or_404(Post, slug=slug)
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			comment = form.save(commit=False)
+			comment.post = post
+			comment.save()		
+			return redirect('blog:post_detail', slug=post.slug)
+	else:
+		form = CommentForm()
+	template = 'blog/post/add_comment.html'
+	context = {'form':form}
 	return render(request, template, context)

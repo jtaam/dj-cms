@@ -41,3 +41,22 @@ class Post(models.Model):
 
 	def __str__(self):
 		return self.title
+
+
+class Comment(models.Model):
+	post = models.ForeignKey(Post, related_name='comments')
+	user = models.CharField(max_length=250)
+	email = models.EmailField()
+	body = models.TextField()
+	created = models.DateTimeField(auto_now_add=True)
+	approved = models.BooleanField(default=False)
+
+	def approved(self):
+		self.approved = True
+		self.save()
+
+	def get_absolute_url(self):
+		return reverse('blog:add_comment', args=[self.slug])
+
+	def __str__(self):
+		return self.user
