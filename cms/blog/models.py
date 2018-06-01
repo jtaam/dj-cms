@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 # category
@@ -35,6 +36,10 @@ class Post(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	status = models.CharField(max_length=9, choices=STATUS_CHOICES, default='draft')
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Post, self).save(*args, **kwargs)
 
 	def get_absolute_url(self):
 		return reverse('blog:post_detail', args=[self.slug])
