@@ -15,6 +15,7 @@
 			{{post.content|truncatewords:40|linebreaks}}
 			<hr>	
 		{% endfor %}	
+		{% include 'blog/paginator.html' with page=posts %}
 	</div>
 	<!-- /.col-md-8 -->
 	<div class="col-md-4">
