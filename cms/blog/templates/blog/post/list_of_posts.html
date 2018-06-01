@@ -9,11 +9,11 @@
 		</div>
 		<!-- /.page-header -->
 		{% for post in posts %}
-			<h3><a href="{{post.get_absolute_url}}">{{post.title}}</a></h3>
-			<small>Written by {{post.author}} on {{post.published}} in <a href="{{post.category.get_absolute_url}}">{{post.category}}</a></small>			
-			<br>
-			{{post.content|truncatewords:40|linebreaks}}
-			<hr>	
+		<h3><a href="{{post.get_absolute_url}}">{{post.title}}</a></h3>
+		<small>Written by {{post.author}} on {{post.published}} in <a href="{{post.category.get_absolute_url}}">{{post.category}}</a></small>			
+		<br>
+		{{post.content|truncatewords:40|linebreaks}}
+		<hr>	
 		{% endfor %}	
 		{% include 'blog/paginator.html' with page=posts %}
 	</div>
@@ -24,6 +24,6 @@
 		</div>
 	</div>
 	<!-- /.col-md-4 -->
-	{% endblock content %}
 </div>
 <!-- /.row -->
+{% endblock content %}

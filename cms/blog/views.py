@@ -72,3 +72,18 @@ def new_post(request):
 	template = 'blog/backend/new_post.html'
 	context = {'form':form}
 	return render(request, template, context)
+
+
+def list_of_posts_backend(request):	
+	posts = Post.objects.all()
+	paginator = Paginator(posts, 2)
+	page = request.GET.get('page')
+	try:
+		posts = paginator.page(page)
+	except PageNotAnInteger:
+		posts = paginator.page(1)
+	except EmptyPage:
+		posts = paginator.paginator(paginator.num_pages)
+	template = 'blog/backend/list_of_posts_backend.html'
+	context = {'posts':posts, 'page': page}
+	return render(request, template, context)

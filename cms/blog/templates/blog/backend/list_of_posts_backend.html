@@ -1,0 +1,31 @@
+{% extends "blog/base.html" %}
+{% block description %}All blog posts{% endblock %}
+{% block title %}Backend Posts{% endblock %}
+{% block content %}
+<div class="table-responsive">
+	<table class="table table-hovered">
+		<tr>
+			<th>Title</th>
+			<th>Slug</th>
+			<th>Author</th>
+			<th>Published</th>
+			<th>Status</th>
+		</tr>
+		{% for post in posts %}
+			{% if post.status == 'draft' %}
+				<tr class="warning">
+			{% else %}
+				<tr>		
+			{% endif %}
+					<td>{{post.title}}</td>
+					<td>{{post.slug}}</td>
+					<td>{{post.author}}</td>
+					<td>{{post.published}}</td>
+					<td>{{post.status}}</td>
+				</tr>
+		{% endfor %}
+	</table>
+	{% include 'blog/paginator.html' with page=posts %}
+</div>
+<!-- /.table-responsive -->
+{% endblock content %}
