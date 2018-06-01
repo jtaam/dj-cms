@@ -87,3 +87,18 @@ def list_of_posts_backend(request):
 	template = 'blog/backend/list_of_posts_backend.html'
 	context = {'posts':posts, 'page': page}
 	return render(request, template, context)
+
+def edit_post(request, slug):
+	post = get_object_or_404(Post, slug=slug)
+	if request.method == 'POST':
+		form = PostForm(request.POST, instance=post)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.author = request.user
+			post.save()
+			return redirect('blog:list_of_posts_backend', )
+	else:
+		form = PostForm(instance=post)
+	template = 'blog/backend/new_post.html'
+	context = {'form':form}
+	return render(request, template, context)
