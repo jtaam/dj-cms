@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
+from django.contrib import messages
 from .models import Post, Category
 from .forms import CommentForm, PostForm
 
@@ -102,3 +104,12 @@ def edit_post(request, slug):
 	template = 'blog/backend/new_post.html'
 	context = {'form':form}
 	return render(request, template, context)
+
+
+def delete_post(request, slug):
+	if not request.user.is_staff or not request.user.is_superuser:
+		raise Http404
+	post = get_object_or_404(Post, slug=slug)
+	post.delete()
+	messages.success(request, "Successfully Deleted!")
+	return redirect('blog:list_of_posts_backend')
